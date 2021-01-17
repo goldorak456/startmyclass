@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo --------------------
+echo $1 >> ~/Documents/projects/autoedt/zoomlauncher/zoomlinkcatcher.out
+echo $2 >> ~/Documents/projects/autoedt/zoomlauncher/zoomlinkcatcher.out
+echo $3 >> ~/Documents/projects/autoedt/zoomlauncher/zoomlinkcatcher.out
+echo $4 >> ~/Documents/projects/autoedt/zoomlauncher/zoomlinkcatcher.out
+echo $5 >> ~/Documents/projects/autoedt/zoomlauncher/zoomlinkcatcher.out
+echo --------------------
