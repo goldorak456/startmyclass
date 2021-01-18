@@ -1,0 +1,22 @@
+DIR=~/.automatic_courses_player
+if [ -d "$DIR" ];then
+    echo ".automatic_courses_player directory exists."
+else
+    mkdir ~/.automatic_courses_player
+    echo ".automatic_courses_player directory do not exist, and was created."
+fi
+
+cp -r * ~/.automatic_courses_player
+cd ~/.automatic_courses_player
+
+DIR=~/bin
+if [ -d "$DIR" ];then
+    echo "Bin directory exists."
+else
+    mkdir ~/bin
+    echo "Bin directory do not exist, and was created."
+fi
+
+mv ./pedt ~/bin
+cd ~/bin
+chmod +x ./pedt
