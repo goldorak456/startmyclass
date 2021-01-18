@@ -1,35 +1,106 @@
-ikhal
-cours=("Circuits_Actifs_HF"
-"Architecture_Systemes_Integres"
-"Asservissements_Numeriques"
-"DSP_feng"
-"Anglais"
-"Parcour_Creation_Entreprise"
-"Communication_et_Sys_Communication_Num"
-"Sys_Exploitation"
-"CM_salle_Blanche"
-"autre?")
 
-for var in 0 1 2 3 4 5 6 7 8 9
-do
-   printf "%-40s | \t [%s] \n"  ${cours[var]} $var
-done
+function show_and_start_courses() {
+    cours=("Circuits_Actifs_HF"
+    "Architecture_Systemes_Integres"
+    "Asservissements_Numeriques"
+    "DSP_feng"
+    "Anglais"
+    "Parcour_Creation_Entreprise"
+    "Communication_et_Sys_Communication_Num"
+    "Sys_Exploitation"
+    "CM_salle_Blanche"
+    "Other_course_?(Goes_to_Chamilo)"
+    "Other_course_?(Goes_to_Discord)"
+    "EXIT")
 
-read -p "Enter Your Choice: "  coursenb
+    for var in 0 1 2 3 4 5 6 7 8 9 10
+      do
+        printf "%-40s | \t [$var] \n"  ${cours[var]}
+      done
+    echo
+    read -p "Enter Your Choice: "  coursenb
 
-case $coursenb in
-    0) echo "Zoom";;
-    1) echo "Zoom";;
-    2) echo "Zoom";;
-    3) echo "Zoom";;
-    4) echo "Zoom";;
-    5) echo "Zoom";;
-    6) echo "Zoom";;
-    7) echo "Zoom";;
-    8) echo "Starting Discord"
-        discord &;;
-    9) echo "Starting Firefox"
-        firefox https://webmail.minatec.grenoble-inp.fr/login.php?url=https%3A%2F%2Fwebmail.minatec.grenoble-inp.fr%2Fimp%2Fdynamic.php%3Fpage%3Dmailbox&horde_logout_token=yVKtnWOiyOdLVDaZcp7Xqyi &
-        firefox https://cas-simsu.grenet.fr/login?service=http%3A%2F%2Fchamilo.grenoble-inp.fr%2Fmain%2Fauth%2Fcas%2Flogincas.php%3Ffirstpage%3DPHELMACATALOGUE &;;
-    ) echo "doworks";;
-esac
+    case $coursenb in
+        0) echo "Zoom"
+           start_course 0;;
+        1) echo "Zoom"
+           start_course 1;;
+        2) echo "Zoom"
+           start_course 2;;
+        3) echo "Zoom"
+           start_course 3;;
+        4) echo "Zoom"
+           start_course 4;;
+        5) echo "Zoom"
+           start_course 5;;
+        6) echo "Zoom"
+           start_course 6;;
+        7) echo "Zoom"
+           start_course 7;;
+        8) echo "Starting Discord"
+           start_course 8;;
+        9) echo "Starting Firefox"
+           start_course 9;;
+        10) echo "Starting Discord"
+           start_course 10;;
+        11) echo "Quitting"
+            exit;;
+        *) echo "Incorrect answer";;
+    esac
+}
+
+function show_help (){
+    printf "Options : $0\n"
+    printf "\n"
+    printf "Options:\n"
+    printf "%-20s %-100s \n" $" -e|--edt"     $"Prints your agenda only, you need to get ikhal for this feature"
+    printf "%-20s %-100s \n" $" -c|--choice"  $"Prints your courses and asks if you wish to launch one off them"
+    printf "%-20s %-100s \n" $" -h|--help"    $"Print help"
+
+return 0
+}
+
+function start_course(){
+   case $1 in
+      0)zoom &;;
+      1)zoom &;;
+      2)zoom &;;
+      3)zoom &;;
+      4)zoom &;;
+      5)zoom &;;
+      6)zoom &;;
+      7)zoom &;;
+      8)discord &;;
+      9)
+        xdg-open https://webmail.minatec.grenoble-inp.fr/login.php?url=https%3A%2F%2Fwebmail.minatec.grenoble-inp.fr%2Fimp%2Fdynamic.php%3Fpage%3Dmailbox&horde_logout_token=yVKtnWOiyOdLVDaZcp7Xqyi &
+        xdg-open https://cas-simsu.grenet.fr/login?service=http%3A%2F%2Fchamilo.grenoble-inp.fr%2Fmain%2Fauth%2Fcas%2Flogincas.php%3Ffirstpage%3DPHELMACATALOGUE &;;
+      10)discord &;;
+      *)echo "Nothing to be done";;
+   esac
+
+}
+
+
+% MAIN CODE HERE
+
+if [ ! -z "$1" ]
+then
+    while [ ! -z "$1" ];
+    do
+      case "$1" in
+         -e|--edt)
+             echo "Displaying edt"
+             ikhal;;
+         -c|--choice)
+             echo "Choices available are :"
+             show_and_start_courses;;
+         -h|--help)
+            show_help;;
+         *) show_help;;
+
+      esac
+      shift
+    done
+else
+echo "Cristiano code"
+fi
