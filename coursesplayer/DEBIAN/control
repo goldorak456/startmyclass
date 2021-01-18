@@ -1,0 +1,9 @@
+Package: coursesplayer
+Version: 1.0
+Section: custom
+Priority: optional
+Architecture: all
+Essential: no
+Installed-Size: 1024
+Maintainer: cristiano et luca
+Description: Print Automatic Courses Player on the screen
