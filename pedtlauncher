@@ -1,53 +1,76 @@
 
+cours=("Circuits_Actifs_HF"                    #0
+"Architecture_Systemes_Integres"               #1
+"Asservissements_Numeriques"                   #2
+"DSP_feng"                                     #3
+"Anglais"                                      #4
+"Parcour_Creation_Entreprise"                  #5
+"Communication_et_Sys_Communication_Num"       #6
+"Sys_Exploitation"                             #7
+"CM_salle_Blanche"                             #8
+"Other_course_?(Goes_to_Chamilo)"              #9
+"Other_course_?(Goes_to_Discord)"              #10
+"EXIT")                                        #11
+
+first=0
+last=10
+
+links=("zoommtg://zoom.us/join?action=join&confno=4750357476"               #0
+       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #1
+       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #2
+       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #3
+       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #4
+       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #5
+       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #6
+       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #7
+       "autre"                                                              #8
+       "special"                                                            #9
+       "special"                                                            #10
+       "special"                                                            #11
+)
+
+codes=("1111222233"               #0
+       "1111222233"               #1
+       "1111222233"               #2
+       "1111222233"               #3
+       "1111222233"               #4
+       "1111222233"               #5
+       "1111222233"               #6
+       "1111222233"               #7
+       "autre"                    #8
+       "special"                  #9
+       "special"                  #10
+       "special"                  #11
+)
+
+
+#Displays all courses and starts the user's choice by calling startcourses function
+#NO PARAM
+#NO RETURN
+
 function show_and_start_courses() {
-    cours=("Circuits_Actifs_HF"
-    "Architecture_Systemes_Integres"
-    "Asservissements_Numeriques"
-    "DSP_feng"
-    "Anglais"
-    "Parcour_Creation_Entreprise"
-    "Communication_et_Sys_Communication_Num"
-    "Sys_Exploitation"
-    "CM_salle_Blanche"
-    "Other_course_?(Goes_to_Chamilo)"
-    "Other_course_?(Goes_to_Discord)"
-    "EXIT")
 
     for var in 0 1 2 3 4 5 6 7 8 9 10
       do
         printf "%-40s | \t [$var] \n"  ${cours[var]}
       done
     echo
-    read -p "Enter Your Choice: "  coursenb
+    read -p "Enter Your Choice: "  $1
 
-    case $coursenb in
-        0) echo "Zoom"
-           start_course 0;;
-        1) echo "Zoom"
-           start_course 1;;
-        2) echo "Zoom"
-           start_course 2;;
-        3) echo "Zoom"
-           start_course 3;;
-        4) echo "Zoom"
-           start_course 4;;
-        5) echo "Zoom"
-           start_course 5;;
-        6) echo "Zoom"
-           start_course 6;;
-        7) echo "Zoom"
-           start_course 7;;
-        8) echo "Starting Discord"
-           start_course 8;;
-        9) echo "Starting Firefox"
-           start_course 9;;
-        10) echo "Starting Discord"
-           start_course 10;;
-        11) echo "Quitting"
-            exit;;
-        *) echo "Incorrect answer";;
-    esac
+
+    if [[ 0 -le $1 ]];then  # -a 10 -ge $1
+        start_course $1
+
+    else
+        echo "Incorrect answer, quitting"
+        exit 0
+    fi
 }
+
+
+#FUNCTION SHOWING help
+#NO PARAM
+#NO RETURN
 
 function show_help (){
     printf "Options : $0\n"
@@ -60,32 +83,35 @@ function show_help (){
 return 0
 }
 
+
+#FUNCTION starting courses
+#PARAM : number of the course to start
+#NO RETURN
+
 function start_course(){
-   case $1 in
-      0)zoom &;;
-      1)zoom &;;
-      2)zoom &;;
-      3)zoom &;;
-      4)zoom &;;
-      5)zoom &;;
-      6)zoom &;;
-      7)zoom &;;
-      8)discord &;;
-      9)
-        xdg-open https://webmail.minatec.grenoble-inp.fr/login.php?url=https%3A%2F%2Fwebmail.minatec.grenoble-inp.fr%2Fimp%2Fdynamic.php%3Fpage%3Dmailbox&horde_logout_token=yVKtnWOiyOdLVDaZcp7Xqyi &
-        xdg-open https://cas-simsu.grenet.fr/login?service=http%3A%2F%2Fchamilo.grenoble-inp.fr%2Fmain%2Fauth%2Fcas%2Flogincas.php%3Ffirstpage%3DPHELMACATALOGUE &;;
-      10)discord &;;
-      *)echo "Nothing to be done";;
-   esac
+
+  if [[ 7 -ge $1 ]];then      # -a 7 -ge $1
+      xdg-open  ${links[$1]}
+      echo ${codes[$1]} | xclip -sel clip
+
+  else
+    case $1 in
+       8)discord &;;
+       9)xdg-open https://webmail.minatec.grenoble-inp.fr/login.php?url=https%3A%2F%2Fwebmail.minatec.grenoble-inp.fr%2Fimp%2Fdynamic.php%3Fpage%3Dmailbox&horde_logout_token=yVKtnWOiyOdLVDaZcp7Xqyi &
+         xdg-open https://cas-simsu.grenet.fr/login?service=http%3A%2F%2Fchamilo.grenoble-inp.fr%2Fmain%2Fauth%2Fcas%2Flogincas.php%3Ffirstpage%3DPHELMACATALOGUE &;;
+       10)discord &;;
+       *)echo "Exit. Bye Bye."
+         exit 0;;
+    esac
+  fi
+
 
 }
 
+#MAIN CODE HERE
 
-% MAIN CODE HERE
-
-if [ ! -z "$1" ]
-then
-    while [ ! -z "$1" ];
+if [ ! -z "$1" ];then
+    while [ ! -z "$1" ]
     do
       case "$1" in
          -e|--edt)
@@ -102,5 +128,5 @@ then
       shift
     done
 else
-echo "Cristiano code"
+  echo "Cristiano code"
 fi
