@@ -1,1 +1,1 @@
-/usr/lib/.automatic_courses_player/pedtlauncher
+/usr/lib/.automatic_courses_player/pedtlauncher "$@"

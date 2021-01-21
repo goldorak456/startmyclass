@@ -93,7 +93,7 @@ function show_help (){
     printf "Options:\n"
     printf "%-20s %-100s \n" $" -e|--edt"     $"Prints your agenda only, you need to get ikhal for this feature"
     printf "%-20s %-100s \n" $" -c|--choice"  $"Prints your courses and asks if you wish to launch one off them"
-      printf "%-20s %-100s \n" $" -u|--update"    $"Print help"
+      printf "%-20s %-100s \n" $" -u|--update"    $"Updates ikhal calendar"
     printf "%-20s %-100s \n" $" -h|--help"    $"Print help"
 
 return 0
