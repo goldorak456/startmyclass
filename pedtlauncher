@@ -1,19 +1,30 @@
+#!/bin/bash
+
+first=0
+lastzoom=6
+
+firstweb=7
+lastweb=8
+
+firstdiscord=9
+lastdiscord=10
+
+last=11
+
 
 cours=("Circuits_Actifs_HF"                    #0
 "Architecture_Systemes_Integres"               #1
 "Asservissements_Numeriques"                   #2
 "DSP_feng"                                     #3
-"Anglais"                                      #4
-"Parcour_Creation_Entreprise"                  #5
-"Communication_et_Sys_Communication_Num"       #6
-"Sys_Exploitation"                             #7
-"CM_salle_Blanche"                             #8
-"Other_course_?(Goes_to_Chamilo)"              #9
-"Other_course_?(Goes_to_Discord)"              #10
+"Parcour_Creation_Entreprise"                  #4
+"Communication_et_Sys_Communication_Num"       #5
+"Sys_Exploitation"                             #6
+"Other_course_?(Chamilo)"              #7
+"Anglais"                                      #8
+"CM_salle_Blanche"                             #9
+"Other_course_?(Discord)"              #10
 "EXIT")                                        #11
 
-first=0
-last=10
 
 links=("zoommtg://zoom.us/join?action=join&confno=4750357476"               #0
        "zoommtg://zoom.us/join?action=join&confno=4750357476"               #1
@@ -22,10 +33,10 @@ links=("zoommtg://zoom.us/join?action=join&confno=4750357476"               #0
        "zoommtg://zoom.us/join?action=join&confno=4750357476"               #4
        "zoommtg://zoom.us/join?action=join&confno=4750357476"               #5
        "zoommtg://zoom.us/join?action=join&confno=4750357476"               #6
-       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #7
-       "autre"                                                              #8
-       "special"                                                            #9
-       "special"                                                            #10
+       "https://cas-simsu.grenet.fr/login?service=http%3A%2F%2Fchamilo.grenoble-inp.fr%2Fmain%2Fauth%2Fcas%2Flogincas.php%3Ffirstpage%3DPHELMACATALOGUE"                                                              #8
+       "https://chamilo.grenoble-inp.fr/courses/PHELMA4PMCAN42/"            #8
+       "discord"                                                            #9
+       "discord"                                                            #10
        "special"                                                            #11
 )
 
@@ -36,10 +47,10 @@ codes=("1111222233"               #0
        "1111222233"               #4
        "1111222233"               #5
        "1111222233"               #6
-       "1111222233"               #7
-       "autre"                    #8
-       "special"                  #9
-       "special"                  #10
+       "none"               #7
+       "none"                     #8
+       "discord"                     #9
+       "discord"                  #10
        "special"                  #11
 )
 
@@ -49,17 +60,21 @@ codes=("1111222233"               #0
 #NO RETURN
 
 function show_and_start_courses() {
+    var=$first
 
-    for var in 0 1 2 3 4 5 6 7 8 9 10
+    printf "\n\n_____________________________________________________________\n\n"
+    while [[ $last -ge $var ]]
       do
-        printf "%-40s | \t [$var] \n"  ${cours[var]}
+
+        printf "|  %-40s | \t [$var] \n"  ${cours[var]}
+        printf "_____________________________________________________________\n\n"
+        var=$(($var + 1))
       done
     echo
-    read -p "Enter Your Choice: "  $1
+    read -p "Enter Your Choice: " choice
 
-
-    if [[ 0 -le $1 ]];then  # -a 10 -ge $1
-        start_course $1
+    if  [[ $first -le $choice ]] && [[ $last -ge $choice ]] ;then
+        start_course $choice
 
     else
         echo "Incorrect answer, quitting"
@@ -78,6 +93,7 @@ function show_help (){
     printf "Options:\n"
     printf "%-20s %-100s \n" $" -e|--edt"     $"Prints your agenda only, you need to get ikhal for this feature"
     printf "%-20s %-100s \n" $" -c|--choice"  $"Prints your courses and asks if you wish to launch one off them"
+      printf "%-20s %-100s \n" $" -u|--update"    $"Print help"
     printf "%-20s %-100s \n" $" -h|--help"    $"Print help"
 
 return 0
@@ -90,21 +106,23 @@ return 0
 
 function start_course(){
 
-  if [[ 7 -ge $1 ]];then      # -a 7 -ge $1
-      xdg-open  ${links[$1]}
-      echo ${codes[$1]} | xclip -sel clip
+  if [[ $first -le $1 ]] && [[ $lastzoom -ge $1 ]];then
+      xdg-open  ${links[$1]} &
+      echo "Zoom launch ... Please wait"
+      echo -n ${codes[$1]} | xclip -sel clip
+
+  elif [[ $firstweb -le $1 ]] && [[ $lastweb -ge $1 ]];then
+      xdg-open  ${links[$1]} &
+      echo "Web page launch ... Please wait"
+
+  elif [[ $firstdiscord -le $1 ]] && [[ $lastdiscord -ge $1 ]];then
+      discord &
+      echo "Discord launch ... Please wait"
 
   else
-    case $1 in
-       8)discord &;;
-       9)xdg-open https://webmail.minatec.grenoble-inp.fr/login.php?url=https%3A%2F%2Fwebmail.minatec.grenoble-inp.fr%2Fimp%2Fdynamic.php%3Fpage%3Dmailbox&horde_logout_token=yVKtnWOiyOdLVDaZcp7Xqyi &
-         xdg-open https://cas-simsu.grenet.fr/login?service=http%3A%2F%2Fchamilo.grenoble-inp.fr%2Fmain%2Fauth%2Fcas%2Flogincas.php%3Ffirstpage%3DPHELMACATALOGUE &;;
-       10)discord &;;
-       *)echo "Exit. Bye Bye."
-         exit 0;;
-    esac
+    echo "Exit. Bye Bye."
+    exit 0
   fi
-
 
 }
 
