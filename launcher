@@ -1,3 +1,4 @@
+# Created by Luca Persano 20/01/2021  luca.persano@phelma.grenoble-inp.fr
 #!/bin/bash
 
 first=0
@@ -88,12 +89,17 @@ function show_and_start_courses() {
 #NO RETURN
 
 function show_help (){
-    printf "Options : $0\n"
-    printf "\n"
-    printf "Options:\n"
+    printf "\nOptions : $0\n\n"
+    printf "DESCRIPTION\n\n"
+    printf " The package startmyclass will display your courses list and propose you to launch one. Depending on the parameters you choose, it will show your agenda, or your next coming courses.\n\n"
+    printf "LICENSE\n\n"
+    printf "This is not a proprietary package. You are free to modify, distribute, and copy its content by mentionning credentials.\n\n"
+    printf "CONTACT\n\n"
+    printf "Please do not hesitate to contact us to report errors, or feedbacks : cristiano.merio@phelma.grenoble-inp.fr  luca.persano@phelma.grenoble-inp.fr\n\n"
+    printf "OPTIONS:\n\n"
     printf "%-20s %-100s \n" $" -e|--edt"     $"Prints your agenda only, you need to get ikhal for this feature"
     printf "%-20s %-100s \n" $" -c|--choice"  $"Prints your courses and asks if you wish to launch one off them"
-      printf "%-20s %-100s \n" $" -u|--update"    $"Updates ikhal calendar"
+    printf "%-20s %-100s \n" $" -u|--update"    $"Updates ikhal calendar"
     printf "%-20s %-100s \n" $" -h|--help"    $"Print help"
 
 return 0
@@ -132,10 +138,13 @@ if [ ! -z "$1" ];then
     while [ ! -z "$1" ]
     do
       case "$1" in
+         -u|--update)
+            echo "Updating edt";;
          -e|--edt)
              echo "Displaying edt"
-             ikhal;;
-         -c|--choice)
+             ikhal
+             show_and_start_courses;;
+         -c|--courses)
              echo "Choices available are :"
              show_and_start_courses;;
          -h|--help)
@@ -146,5 +155,5 @@ if [ ! -z "$1" ];then
       shift
     done
 else
-  echo "Cristiano code"
+  show_and_start_courses
 fi

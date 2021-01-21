@@ -8,20 +8,21 @@ Pack1="xclip"
 
 pack1="khal"
 
+Test=0
+dpkg -s "${xclip}" >/dev/null 2>&1 || Test=1
 
-apt-cache pkgnames | grep -q $Pack1
 
-if [ $? -eq 0 ]; then
+if [ $Test -eq 1 ]; then
     echo "$Pack1  is installed!"
 else
     echo "Package $Pack1 is NOT installed!"
     ExistPack1=1
 fi
 
+Test=0
+dpkg -s "${khal}" >/dev/null 2>&1 || Test=1
 
-apt-cache pkgnames | grep -q $pack1
-
-if [ $? -eq 0 ]; then
+if [ $Test -eq 1 ]; then
     echo "$pack1  is installed!"
 else
     echo "Package  $pack1 is NOT installed!"
@@ -70,7 +71,7 @@ echo # END OF DISPLAYING INSTALLATIONS REQUESTS TO PURSUE ----------------------
 
 
 
-DIR=/usr/lib/.automatic_courses_player
+DIR=/usr/lib/.startmyclass
 
 if [ -d "$DIR" ];then
     echo "Directory $DIR exists"
@@ -91,7 +92,7 @@ else
   exit 0
 fi
 
-mv ./pedt $DIR
+mv ./startmyclass $DIR
 cd $DIR
-chmod +x ./pedt
+chmod +x ./startmyclass
 echo "Installation finished."
