@@ -1,16 +1,10 @@
 # Created by Luca Persano 20/01/2021  luca.persano@phelma.grenoble-inp.fr
 #!/bin/bash
 
-first=0
-lastzoom=6
+zoomNb=7
+webNb=2
+discordNb=2
 
-firstweb=7
-lastweb=8
-
-firstdiscord=9
-lastdiscord=10
-
-last=11
 
 
 cours=("Circuits_Actifs_HF"                    #0
@@ -18,42 +12,57 @@ cours=("Circuits_Actifs_HF"                    #0
 "Asservissements_Numeriques"                   #2
 "DSP_feng"                                     #3
 "Parcour_Creation_Entreprise"                  #4
-"Communication_et_Sys_Communication_Num"       #5
-"Sys_Exploitation"                             #6
-"Other_course_?(Chamilo)"              #7
-"Anglais"                                      #8
-"CM_salle_Blanche"                             #9
-"Other_course_?(Discord)"              #10
-"EXIT")                                        #11
+"Parcour_Management"                           #5
+"Communication_et_Sys_Communication_Num"       #6
+"Sys_Exploitation"                             #7
+"Other_course_?(Chamilo)"              #8
+"Anglais"                                      #9
+"CM_salle_Blanche"                             #10
+"Other_course_?(Discord)"              #11
+"EXIT")                                        #12
 
 
 links=("zoommtg://zoom.us/join?action=join&confno=4750357476"               #0
-       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #1
-       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #2
-       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #3
-       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #4
-       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #5
-       "zoommtg://zoom.us/join?action=join&confno=4750357476"               #6
+       "zoommtg://zoom.us/join?action=join&confno=99448600720"              #1
+       "zoommtg://zoom.us/join?action=join&confno=0"                        #2
+       "zoommtg://zoom.us/join?action=join&confno=2269417657"               #3
+       "zoommtg://zoom.us/join?action=join&confno=0"                        #4
+       "zoommtg://zoom.us/join?action=join&confno=0"                        #5
+       "zoommtg://zoom.us/join?action=join&confno=0"                        #6
+       "zoommtg://zoom.us/join?action=join&confno=91084737961"              #7
        "https://cas-simsu.grenet.fr/login?service=http%3A%2F%2Fchamilo.grenoble-inp.fr%2Fmain%2Fauth%2Fcas%2Flogincas.php%3Ffirstpage%3DPHELMACATALOGUE"                                                              #8
-       "https://chamilo.grenoble-inp.fr/courses/PHELMA4PMCAN42/"            #8
-       "discord"                                                            #9
+       "https://chamilo.grenoble-inp.fr/courses/PHELMA4PMCAN42/"            #9
        "discord"                                                            #10
-       "special"                                                            #11
+       "discord"                                                            #11
+       "special"                                                            #12
 )
 
 codes=("1111222233"               #0
-       "1111222233"               #1
-       "1111222233"               #2
-       "1111222233"               #3
-       "1111222233"               #4
-       "1111222233"               #5
-       "1111222233"               #6
-       "none"               #7
+       "557050"                   #1
+       "X"                        #2
+       "407990"                   #3
+       "X"                        #4
+       "X"                        #5
+       "X"                        #6
+       "os"                       #7
        "none"                     #8
-       "discord"                     #9
+       "none"                     #9
        "discord"                  #10
-       "special"                  #11
+       "discord"                  #11
+       "special"                  #12
 )
+
+
+first=0
+lastzoom=$zoomNb
+
+firstweb=$(($lastzoom + 1))
+lastweb=$(($firstweb + $webNb -1))
+
+firstdiscord=$(($lastweb + 1))
+lastdiscord=$(($firstdiscord + $discordNb - 1))
+
+last=$(($lastdiscord + 1))
 
 
 #Displays all courses and starts the user's choice by calling startcourses function
@@ -84,6 +93,26 @@ function show_and_start_courses() {
 }
 
 
+function update_ikhal() {
+  pack1="khal"
+  Test=0
+  dpkg -s "${khal}" >/dev/null 2>&1 || Test=1
+
+  if [ $Test -eq 1 ]; then
+      echo "$pack1  is installed! Trying to update..."
+  else
+      echo "Package  $pack1 is NOT installed. Please install ikhal (sudo apt install khal for instance) to use this feature."
+      exit 0
+  fi
+  printf "\nPlease enter your Phelma credentials to update your courses agenda from ADE (with HTTP protocol !)\n\n"
+  read -p "Username : " user
+  echo -n "Password :"
+  read -s  p
+  printf "\n\n Please wait a few seconds\n"
+  wget --output-document ade.ics --auth-no-challenge --http-user=$user --http-password=$p "https://edt.grenoble-inp.fr/directCal/2020-2021/etudiant/phelma?resources=20915,13608,20914,13629"
+  khal import -a work --batch ade.ics
+}
+
 #FUNCTION SHOWING help
 #NO PARAM
 #NO RETURN
@@ -93,13 +122,13 @@ function show_help (){
     printf "DESCRIPTION\n\n"
     printf " The package startmyclass will display your courses list and propose you to launch one. Depending on the parameters you choose, it will show your agenda, or your next coming courses.\n\n"
     printf "LICENSE\n\n"
-    printf "This is not a proprietary package. You are free to modify, distribute, and copy its content by mentionning credentials.\n\n"
+    printf "This is not a proprietary package. You are free to modify, distribute, and copy its content by mentionning credentials. However, this package contains codes and IDs you should never distribute, if you do, we will not take no responsabilities.\n\n"
     printf "CONTACT\n\n"
     printf "Please do not hesitate to contact us to report errors, or feedbacks : cristiano.merio@phelma.grenoble-inp.fr  luca.persano@phelma.grenoble-inp.fr\n\n"
     printf "OPTIONS:\n\n"
-    printf "%-20s %-100s \n" $" -e|--edt"     $"Prints your agenda only, you need to get ikhal for this feature"
-    printf "%-20s %-100s \n" $" -c|--choice"  $"Prints your courses and asks if you wish to launch one off them"
-    printf "%-20s %-100s \n" $" -u|--update"    $"Updates ikhal calendar"
+    printf "%-20s %-100s \n" $" -e|--edt"     $"Agenda is displayed before asking the course you wish to start, (ikhal must be installed to use this feature)"
+    printf "%-20s %-100s \n" $" -c|--choice"  $"Prints automaticaly your next coming course (only) on the terminal and asks if you wish to launch one of them"
+    printf "%-20s %-100s \n" $" -u|--update"  $"Updates ikhal calendar, (ikhal must be installed to use this feature)"
     printf "%-20s %-100s \n" $" -h|--help"    $"Print help"
 
 return 0
@@ -139,7 +168,8 @@ if [ ! -z "$1" ];then
     do
       case "$1" in
          -u|--update)
-            echo "Updating edt";;
+            echo "Updating ikhal edt"
+            update_ikhal;;
          -e|--edt)
              echo "Displaying edt"
              ikhal

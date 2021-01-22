@@ -71,6 +71,22 @@ echo # END OF DISPLAYING INSTALLATIONS REQUESTS TO PURSUE ----------------------
 
 
 
+DIR=~/.khal/work
+mkdir -p $DIR
+echo "$DIR directory was created."
+
+DIR=~/.config/khal
+echo "$DIR directory was created."
+
+if [ -d "$DIR" ];then
+    echo "Directory $DIR exists"
+else
+    mkdir -p $DIR
+    echo "$DIR directory did not exist, and was created."
+fi
+
+cp ./calendar/khal/config $DIR
+
 DIR=/usr/lib/.startmyclass
 
 if [ -d "$DIR" ];then

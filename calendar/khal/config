@@ -1,0 +1,19 @@
+[calendars]
+
+[[work]]
+path = ~/.khal/work
+type = calendar
+color = dark cyan
+
+[[home]]
+path = ~/.khal/home
+type = calendar
+color = light magenta
+
+
+[locale]
+timeformat = %H:%M
+dateformat = %d/%m/%Y
+longdateformat = %d/%m/%Y
+datetimeformat = %d/%m/%Y %H:%M
+longdatetimeformat = %d/%m/%Y %H:%M
