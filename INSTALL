@@ -9,10 +9,10 @@ Pack1="xclip"
 pack1="khal"
 
 Test=0
-dpkg -s "${xclip}" >/dev/null 2>&1 || Test=1
+dpkg -s xclip >/dev/null 2>&1 || Test=1
 
 
-if [ $Test -eq 1 ]; then
+if [ $Test -eq 0 ]; then
     echo "$Pack1  is installed!"
 else
     echo "Package $Pack1 is NOT installed!"
@@ -20,9 +20,9 @@ else
 fi
 
 Test=0
-dpkg -s "${khal}" >/dev/null 2>&1 || Test=1
+dpkg -s khal >/dev/null 2>&1 || Test=1
 
-if [ $Test -eq 1 ]; then
+if [ $Test -eq 0 ]; then
     echo "$pack1  is installed!"
 else
     echo "Package  $pack1 is NOT installed!"
@@ -72,12 +72,14 @@ echo # END OF DISPLAYING INSTALLATIONS REQUESTS TO PURSUE ----------------------
 
 
 DIR=~/.khal/work
-mkdir -p $DIR
-echo "$DIR directory was created."
+if [ -d "$DIR" ];then
+    echo "Directory $DIR exists"
+else
+    mkdir -p $DIR
+    echo "$DIR directory did not exist, and was created."
+fi
 
 DIR=~/.config/khal
-echo "$DIR directory was created."
-
 if [ -d "$DIR" ];then
     echo "Directory $DIR exists"
 else
@@ -85,17 +87,23 @@ else
     echo "$DIR directory did not exist, and was created."
 fi
 
+
+if [ -d "$DIR" ];then
+    echo "Directory $DIR exists"
+else
+    mkdir -p $DIR
+    echo "$DIR directory did not exist, and was created."
+fi
 cp ./calendar/khal/config $DIR
 
-DIR=/usr/lib/.startmyclass
 
+DIR=/usr/lib/.startmyclass
 if [ -d "$DIR" ];then
     echo "Directory $DIR exists"
 else
     mkdir -p $DIR
     echo "$DIR directory did not exist, and was created."
 fi
-
 cp -r * $DIR
 cd $DIR
 
