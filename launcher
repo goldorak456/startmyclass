@@ -5,7 +5,7 @@ zoomNb=7
 webNb=2
 discordNb=2
 
-
+ADElink="https://edt.grenoble-inp.fr/directCal/2020-2021/etudiant/phelma?resources=20915,13608,20914,13629"
 
 cours=("Circuits_Actifs_HF"                    #0
 "Architecture_Systemes_Integres"               #1
@@ -109,7 +109,7 @@ function update_ikhal() {
   echo -n "Password :"
   read -s  p
   printf "\n\n Please wait a few seconds\n"
-  wget --output-document ade.ics --auth-no-challenge --http-user=$user --http-password=$p "https://edt.grenoble-inp.fr/directCal/2020-2021/etudiant/phelma?resources=20915,13608,20914,13629"
+  wget --output-document ade.ics --auth-no-challenge --http-user=$user --http-password=$p $ADElink
   khal import -a work --batch ade.ics
 }
 
