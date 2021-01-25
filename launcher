@@ -104,13 +104,49 @@ function update_ikhal() {
       echo "Package  $pack1 is NOT installed. Please install ikhal (sudo apt install khal for instance) to use this feature."
       exit 0
   fi
-  printf "\nPlease enter your Phelma credentials to update your courses agenda from ADE (with HTTP protocol !)\n\n"
+  printf "\nPlease enter your Phelma credentials to update your agenda from ADE (with HTTP protocol !)\n\n"
   read -p "Username : " user
   echo -n "Password :"
   read -s  p
   printf "\n\n Please wait a few seconds\n"
   wget --output-document ade.ics --auth-no-challenge --http-user=$user --http-password=$p $ADElink
   khal import -a work --batch ade.ics
+}
+
+function fetch_and_parse_calendar (){
+  printf "\nPlease enter your Phelma credentials to update your agenda from ADE (with HTTP protocol !)\n\n"
+  read -p "Username : " user
+  echo -n "Password :"
+  read -s  p
+  printf "\n\n Please wait a few seconds\n"
+  wget --output-document ade.ics --auth-no-challenge --http-user=$user --http-password=$p $ADElink
+  cat ade.ics | grep BEGIN:VEVENT -n -A 4 | grep -v BEGIN | grep  DTSTART:`date +"%Y%m%d"` -A 2 -B 1 > /tmp/pedt_classes
+  cat /tmp/pedt_classes | grep DTEND > /tmp/pedt_classes_ends
+  declare -a time_array
+  time_array=()
+  declare -a line_array
+  line_array=()
+  for element in `cat /tmp/pedt_classes_ends`
+  do
+    tempvar=${element##*"T"}
+    time_array+=($(($(echo $tempvar | tail -c 9 | head -c 4) + 100)))
+    line_array+=(${element%%"-"*})
+  done
+  echo `declare -p time_array`
+  echo `declare -p line_array`
+  bigdate=2500
+  for i in `seq  0 $((${#time_array[@]} - 1))`
+  do
+    if [ `date +"%H%M"` -lt ${time_array[i]} ]
+    then
+      if [ ${time_array[i]} -lt $bigdate ]
+      then
+        bigdate=${time_array[i]}
+      fi
+      echo test
+    fi
+  done
+
 }
 
 #FUNCTION SHOWING help
@@ -177,6 +213,9 @@ if [ ! -z "$1" ];then
          -c|--courses)
              echo "Choices available are :"
              show_and_start_courses;;
+         -f|--fetch)
+             echo "Findind next lesson.."
+             fetch_and_parse_calendar;;
          -h|--help)
             show_help;;
          *) show_help;;
