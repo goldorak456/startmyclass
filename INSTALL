@@ -9,8 +9,20 @@ Pack1="xclip"
 pack1="khal"
 
 Test=0
-dpkg -s xclip >/dev/null 2>&1 || Test=1
+test=0
 
+which dpkg >/dev/null 2>&1
+if [ $? -eq 0 ];
+then
+    dpkg -s xclip >/dev/null 2>&1 || Test=1
+    dpkg -s khal >/dev/null 2>&1 || test=1
+fi
+
+which pacman >/dev/null 2>&1
+if [ $? -eq 0 ]; then
+    pacman -Qi xclip >/dev/null 2>&1 || Test=1
+    pacman -Qi khal >/dev/null 2>&1 || test=1
+fi
 
 if [ $Test -eq 0 ]; then
     echo "$Pack1  is installed!"
@@ -19,10 +31,8 @@ else
     ExistPack1=1
 fi
 
-Test=0
-dpkg -s khal >/dev/null 2>&1 || Test=1
 
-if [ $Test -eq 0 ]; then
+if [ $test -eq 0 ]; then
     echo "$pack1  is installed!"
 else
     echo "Package  $pack1 is NOT installed!"
@@ -47,7 +57,6 @@ fi
 
 
 # MANDATORY packages +++++++++++++
-
 
 if [ $((ExistPack1)) -ne 0 ]; then
 
