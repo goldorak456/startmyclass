@@ -87,7 +87,7 @@ function show_and_start_courses() {
         start_course $choice
 
     else
-        echo "Incorrect answer, quitting"
+        echo "Illegal answer. Please input an integer"
         exit 0
     fi
 }
@@ -99,7 +99,7 @@ function update_ikhal() {
   dpkg -s "${khal}" >/dev/null 2>&1 || Test=1
 
   if [ $Test -eq 1 ]; then
-      echo "$pack1  is installed! Trying to update..."
+      echo "$pack1 is installed! Trying to update..."
   else
       echo "Package  $pack1 is NOT installed. Please install ikhal (sudo apt install khal for instance) to use this feature."
       exit 0
@@ -184,9 +184,9 @@ function fetch_and_parse_calendar (){
     start_course 6;;
     "Syst. d'exploit. ")
     start_course 7;;
-    "Digital Sign Process ")
+    " X ")
     start_course 8;;
-    "Digital Sign Process ")
+    " X ")
     start_course 9;;
     *)
     echo Class not found;;
@@ -200,16 +200,18 @@ function fetch_and_parse_calendar (){
 function show_help (){
     printf "\nOptions : $0\n\n"
     printf "DESCRIPTION\n\n"
-    printf " The package startmyclass will display your courses list and propose you to launch one. Depending on the parameters you choose, it will show your agenda, or your next coming courses.\n\n"
+    printf "The package startmyclass will display a list of all of your courses and ask you to choose one. It will then open the right program with the right parameters depending on your choice. startmyclass also supports arguments which are specified below.\n\n"
     printf "LICENSE\n\n"
-    printf "This is not a proprietary package. You are free to modify, distribute, and copy its content by mentionning credentials. However, this package contains codes and IDs you should never distribute, if you do, we will not take no responsabilities.\n\n"
+    printf "This program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by \nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n"
+    printf "This package contains codes and IDs (contained in the cours and links variables) you should never distribute and are outside the licence, if you do, we will not take responsability.\n\n"
     printf "CONTACT\n\n"
-    printf "Please do not hesitate to contact us to report errors, or feedbacks : cristiano.merio@phelma.grenoble-inp.fr  luca.persano@phelma.grenoble-inp.fr\n\n"
+    printf "Please do not hesitate to contact us to report errors, or feedbacks : cristiano.merio@phelma.grenoble-inp.fr  luca.persano@phelma.grenoble-inp.fr\nIf you want to contribute to the program, do a merge request.\n\n"
     printf "OPTIONS:\n\n"
-    printf "%-20s %-100s \n" $" -e|--edt"     $"Agenda is displayed before asking the course you wish to start, (ikhal must be installed to use this feature)"
-    printf "%-20s %-100s \n" $" -c|--choice"  $"Prints automaticaly your next coming course (only) on the terminal and asks if you wish to launch one of them"
+    printf "%-20s %-100s \n" $" -e|--edt"     $"Display the agenda before asking the course you wish to start, (ikhal must be installed to use this feature)"
+    printf "%-20s %-100s \n" $" -c|--choice"  $"Prints your next course before asking the course you wish to start"
     printf "%-20s %-100s \n" $" -u|--update"  $"Updates ikhal calendar, (ikhal must be installed to use this feature)"
     printf "%-20s %-100s \n" $" -h|--help"    $"Print help"
+    printf "%-20s %-100s \n" $" -f|--help"    $"Downloads calendar from ADE and starts the next class. (WIP feature, does not work if there are multiple classes in a single time slot)"
 
 return 0
 }
@@ -223,19 +225,19 @@ function start_course(){
 
   if [[ $first -le $1 ]] && [[ $lastzoom -ge $1 ]];then
       xdg-open  ${links[$1]} &
-      echo "Zoom launch ... Please wait"
+      echo "Launching zoom... Please wait"
       echo -n ${codes[$1]} | xclip -sel clip
 
   elif [[ $firstweb -le $1 ]] && [[ $lastweb -ge $1 ]];then
       xdg-open  ${links[$1]} &
-      echo "Web page launch ... Please wait"
+      echo "Launching web page... Please wait"
 
   elif [[ $firstdiscord -le $1 ]] && [[ $lastdiscord -ge $1 ]];then
       discord &
-      echo "Discord launch ... Please wait"
+      echo "Launching discord... Please wait"
 
   else
-    echo "Exit. Bye Bye."
+    echo "Exiting. Bye Bye."
     exit 0
   fi
 
@@ -255,10 +257,10 @@ if [ ! -z "$1" ];then
              ikhal
              show_and_start_courses;;
          -c|--courses)
-             echo "Choices available are :"
+             echo "Available choices are :"
              show_and_start_courses;;
          -f|--fetch)
-             echo "Findind next lesson.."
+             echo "Finding next lesson.."
              fetch_and_parse_calendar;;
          -h|--help)
             show_help;;
