@@ -129,7 +129,7 @@ function fetch_and_parse_calendar (){
   for element in `cat /tmp/pedt_classes_ends`
   do
     tempvar=${element##*"T"}
-    time_array+=($(($(echo $tempvar | tail -c 9 | head -c 4) + 100)))
+    time_array+=($((10#$(echo $tempvar | tail -c 9 | head -c 4) + 100)))
     line_array+=(${element%%"-"*})
   done
   echo `declare -p time_array`
@@ -143,10 +143,54 @@ function fetch_and_parse_calendar (){
       then
         bigdate=${time_array[i]}
       fi
-      echo test
     fi
   done
-
+  if [ $bigdate -eq 2500 ]
+  then
+    echo You have no classes left today or there was an error during timetable fetching
+    exit 0
+  fi
+  #Seeking class from bigdate
+  foundclass=-1
+  for i in `seq 0 $((${#time_array[@]} - 1 ))`
+  do
+    if [ ${time_array[$i]} -eq $bigdate ]
+    then
+      foundclass=$i
+    fi
+  done
+  if [ $foundclass -eq -1 ]
+  then
+    echo "There was an error ): at line 167 of launcher"
+    exit 0
+  fi
+  summary=$(cat /tmp/pedt_classes | grep $((${line_array[foundclass]} + 1))-SUMMARY: )
+  summary=${summary##*":"}
+  summary=${summary%%"("*}
+  case "$summary" in
+    "Circuits actifs hyperf. opt")
+    start_course 0;;
+    "Architect. syst. integ. ")
+    start_course 1;;
+    " X ")
+    start_course 2;;
+    "Digital Sign Process ")
+    start_course 3;;
+    " X ")
+    start_course 4;;
+    " X ")
+    start_course 5;;
+    " X ")
+    start_course 6;;
+    "Syst. d'exploit. ")
+    start_course 7;;
+    "Digital Sign Process ")
+    start_course 8;;
+    "Digital Sign Process ")
+    start_course 9;;
+    *)
+    echo Class not found;;
+  esac
 }
 
 #FUNCTION SHOWING help
