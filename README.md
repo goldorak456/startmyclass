@@ -1,4 +1,4 @@
-# sei_automatic_courses_player
+# startmyclass for SEI
 [SEI] This module should help you to quickly connect to your online video course for semester 2
 
 Startmyclasses has the following dependencies:
