@@ -6,10 +6,10 @@ dpkg, xclip, khal(optional)
 
 ### Install instructions :
 
--Go to the startmyclass directory and open terminal
--Run the command 'sudo ./INSTALL'
--Follow the instruction if it is displayed that other packages are necessary
--You can now run startmyclass by typing "startmyclass"
+1) Go to the startmyclass directory and open terminal
+2) Run the command 'sudo ./INSTALL'
+3) Follow the instruction if it is displayed that other packages are necessary
+4) You can now run startmyclass by typing "startmyclass"
 
 -If you wish to use the calendar (with khal installed) option, you should update the calendar at least once ("startmyclass -u"). This operation should be done at least weekly for correct results.
 
