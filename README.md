@@ -18,5 +18,5 @@ You may simply open the "launcher" file in **usr/lib/.startmyclass/launcher**. K
 
 ### Khal integration:
 NB:
-)If you wish to use the calendar (with khal installed) option, you should update the calendar at least once ("startmyclass -u"). This operation should be done at least weekly for correct results.
-)If you already use khal as agenda, it could interfere with this program, so be sure to save all your personal agendas, and your config files before using any command wich works with khal.
+If you wish to use the calendar (with khal installed) option, you should update the calendar at least once ("startmyclass -u"). This operation should be done at least weekly for correct results.
+If you already use khal as agenda, it could interfere with this program, so be sure to save all your personal agendas, and your config files before using any command wich works with khal.
