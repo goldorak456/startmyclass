@@ -4,7 +4,7 @@
 Startmyclasses has the following dependencies:
 dpkg, xclip, khal(optional)
 
->## To install startmyclass, do as follows :
+>### To install startmyclass, do as follows :
 >
 >-Go to the startmyclass directory and open terminal
 >-Run the command 'sudo ./INSTALL'
@@ -14,7 +14,7 @@ dpkg, xclip, khal(optional)
 -If you wish to use the calendar (with khal installed) option, you should update the calendar at least once ("startmyclass -u"). This operation should be done at least weekly for correct results.
 
 
-## To modify the zoom links or classes, do as follows:
+### To modify the zoom links or classes, do as follows:
 You may simply open the "launcher" file in **usr/lib/.startmyclass/launcher**. Keep in mind that all of your changes wil be overwritten when the package is updated. If you want to keep your changes, consider a merge request.
 
 NB:
