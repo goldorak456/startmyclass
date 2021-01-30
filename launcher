@@ -132,8 +132,8 @@ function fetch_and_parse_calendar (){
     time_array+=($((10#$(echo $tempvar | tail -c 9 | head -c 4) + 100)))
     line_array+=(${element%%"-"*})
   done
-  echo `declare -p time_array`
-  echo `declare -p line_array`
+  #echo `declare -p time_array`
+  #echo `declare -p line_array`
   bigdate=2500
   for i in `seq  0 $((${#time_array[@]} - 1))`
   do
@@ -184,12 +184,14 @@ function fetch_and_parse_calendar (){
     start_course 6;;
     "Syst. d'exploit. ")
     start_course 7;;
+    "Syst. d'exploitation ")
+    start_course 7;;
     " X ")
     start_course 8;;
     " X ")
     start_course 9;;
     *)
-    echo Class not found;;
+    echo Class $summary not found;;
   esac
 }
 
@@ -210,8 +212,8 @@ function show_help (){
     printf "%-20s %-100s \n" $" -e|--edt"     $"Display the agenda before asking the course you wish to start, (ikhal must be installed to use this feature)"
     printf "%-20s %-100s \n" $" -c|--choice"  $"Prints your next course before asking the course you wish to start"
     printf "%-20s %-100s \n" $" -u|--update"  $"Updates ikhal calendar, (ikhal must be installed to use this feature)"
-    printf "%-20s %-100s \n" $" -h|--help"    $"Print help"
-    printf "%-20s %-100s \n" $" -f|--help"    $"Downloads calendar from ADE and starts the next class. (WIP feature, does not work if there are multiple classes in a single time slot)"
+    printf "%-20s %-100s \n" $" -h|--help"    $"Prints help"
+    printf "%-20s %-100s \n" $" -f|--fetch"   $"Downloads calendar from ADE and starts the next class. (WIP feature, does not work if there are multiple classes in a single time slot)"
 
 return 0
 }
@@ -222,11 +224,20 @@ return 0
 #NO RETURN
 
 function start_course(){
+  if [ `uname -r | grep Microsoft | wc -l` -eq 1 ];then
+    iswindowswm=1
+  else
+    iswindowswm=0
+  fi
 
   if [[ $first -le $1 ]] && [[ $lastzoom -ge $1 ]];then
       xdg-open  ${links[$1]} &
       echo "Launching zoom... Please wait"
-      echo -n ${codes[$1]} | xclip -sel clip
+      if [ $iswindowswm -eq 0 ];then
+        echo -n ${codes[$1]} | xclip -sel clip
+      else
+        echo -n ${codes[$1]} | clip.exe
+      fi
 
   elif [[ $firstweb -le $1 ]] && [[ $lastweb -ge $1 ]];then
       xdg-open  ${links[$1]} &
